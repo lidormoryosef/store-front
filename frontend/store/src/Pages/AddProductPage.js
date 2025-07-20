@@ -5,15 +5,14 @@ import TextAreaInput from '../Components/Fields/TextAreaInput';
 import SelectInput from '../Components/Fields/SelectInput';
 
 export default function AddProductPage() {
-  const formatDate = (date) => {
-    const d = new Date(date);
+  const formatDate = (d) => {
     const month = `${d.getMonth() + 1}`.padStart(2, '0');
     const day = `${d.getDate()}`.padStart(2, '0');
     const year = d.getFullYear();
     return [year, month, day].join('-');
   };
   const defaultDate = formatDate(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000));
-  const [form, setForm] = useState({name: '',catalogNumber: '',description: '',type: '',marketingDate: defaultDate,});
+  const [form, setForm] = useState({name: '',catalogNumber: '',description: '',type: '',marketingDate: defaultDate});
   const [errors, setErrors] = useState({});
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
