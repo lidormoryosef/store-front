@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Components/Fields/Header';
-import ProductTable from '../Components/Table/ProductTable';
+import WrapTable from '../Components/Table/WrapTable';
 import './StorePage.css';
 import ReturnHomeButton from '../Components/ReturnHomeButton';
 
@@ -10,7 +10,7 @@ export default function StorePage() {
     <ReturnHomeButton />
     <div className="store-page-container">
       <Header />
-      <ProductTable />
+      <WrapTable />
     </div>
     </>
   );
