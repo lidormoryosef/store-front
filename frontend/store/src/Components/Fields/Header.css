@@ -1,0 +1,16 @@
+.store-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.store-logo {
+  width: 56px !important;
+  height: 56px !important;
+}
+
+.store-title {
+  color: #1976d2;
+  font-weight: 600;
+}
