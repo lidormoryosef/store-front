@@ -34,7 +34,7 @@ export default function AddProductPage() {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const response = await fetch('/api/products/addProduct', {
+      const response = await fetch('http://localhost:5000/api/products/addProduct', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
