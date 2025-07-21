@@ -36,7 +36,7 @@ export default function EditProductModal({ show, product, onClose, onSave , onDe
     if (!validate()) return;
     try {
       console.log()
-      const response = await fetch(`/api/products/editProduct`, {
+      const response = await fetch(`http://localhost:5000/api/products/editProduct`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -65,7 +65,7 @@ export default function EditProductModal({ show, product, onClose, onSave , onDe
     if (!window.confirm('Are you sure you want to delete this product?')) return;
 
     try {
-      const response = await fetch(`/api/products/deleteProduct/${product.id}`, {
+      const response = await fetch(`http://localhost:5000/api/products/deleteProduct/${product.id}`, {
         method: 'DELETE',
       });
 

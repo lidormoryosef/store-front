@@ -25,7 +25,7 @@ useEffect(() => {
       return;
     }
     const res = await fetch(
-      `/api/products/getProducts?page=${currentPage}&limit=${rowsPerPage}&search=${encodeURIComponent(search)}&sortBy=${sortBy}&order=${order}`
+      `http://localhost:5000/api/products/getProducts?page=${currentPage}&limit=${rowsPerPage}&search=${encodeURIComponent(search)}&sortBy=${sortBy}&order=${order}`
     );
     const result = await res.json();
     setData(result.data);
