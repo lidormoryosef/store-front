@@ -5,7 +5,7 @@ import PaginationInfo from './PaginationInfo';
 import EditProductModal from './EditProductModal';
 import ProductTable from './ProductTable'
 import './WrapTable.css';
-
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 const SORTABLE_FIELDS = ['name', 'description', 'type', 'date'];
 
 export default function WrapTable() {
@@ -25,7 +25,7 @@ useEffect(() => {
       return;
     }
     const res = await fetch(
-      `http://localhost:5000/api/products/getProducts?page=${currentPage}&limit=${rowsPerPage}&search=${encodeURIComponent(search)}&sortBy=${sortBy}&order=${order}`
+      `${API_BASE_URL}/api/products/getProducts?page=${currentPage}&limit=${rowsPerPage}&search=${encodeURIComponent(search)}&sortBy=${sortBy}&order=${order}`
     );
     const result = await res.json();
     setData(result.data);
