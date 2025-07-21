@@ -9,51 +9,9 @@ import './WrapTable.css';
 const SORTABLE_FIELDS = ['name', 'description', 'type', 'date'];
 
 export default function WrapTable() {
-  let d = [
-  {
-    "id": 1,
-    "name": "Apple",
-    "catalogNumber": 1001,
-    "description": "Fresh red apples, crispy and juicy.",
-    "type": "Fruit",
-    "marketingDate": "2025-07-13"
-  },
-  {
-    "id": 2,
-    "name": "Carrot",
-    "catalogNumber": 1002,
-    "description": "Organic orange carrots, perfect for salads.",
-    "type": "Vegetable",
-    "marketingDate": "2025-07-12"
-  },
-  {
-    "id": 3,
-    "name": "Wheat",
-    "catalogNumber": 1003,
-    "description": "High-quality wheat grains for baking.",
-    "type": "Field crops",
-    "marketingDate": "2025-07-10"
-  },
-  {
-    "id": 4,
-    "name": "Banana",
-    "catalogNumber": 1004,
-    "description": "Sweet ripe bananas full of potassium.",
-    "type": "Fruit",
-    "marketingDate": "2025-07-11"
-  },
-  {
-    "id": 5,
-    "name": "Spinach",
-    "catalogNumber": 1005,
-    "description": "Fresh green spinach leaves, packed with vitamins.",
-    "type": "Vegetable",
-    "marketingDate": "2025-07-09"
-  }
-]
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [data, setData] = useState(d);
+  const [data, setData] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('name');
@@ -61,17 +19,22 @@ export default function WrapTable() {
   const [currentPage, setCurrentPage] = useState(0);
   const rowsPerPage = 7;
   
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch(
-        `/api/products?page=${currentPage}&limit=${rowsPerPage}&search=${encodeURIComponent(search)}&sortBy=${sortBy}&order=${order}`
-      );
-      const result = await res.json();
-      setData(result.data);
-      setTotalItems(result.totalItems);
+useEffect(() => {
+  async function fetchData() {
+    if (search && search.length > 0 && search.length < 3) {
+      return;
     }
-    fetchData();
-  }, [currentPage, rowsPerPage, search, sortBy, order]);
+    const res = await fetch(
+      `/api/products/getProducts?page=${currentPage}&limit=${rowsPerPage}&search=${encodeURIComponent(search)}&sortBy=${sortBy}&order=${order}`
+    );
+    const result = await res.json();
+    setData(result.data);
+    setTotalItems(result.totalItems);
+  }
+
+  fetchData();
+}, [currentPage, rowsPerPage, search, sortBy, order]);
+
 
   const totalPages = Math.ceil(totalItems / rowsPerPage);
 
@@ -104,7 +67,7 @@ export default function WrapTable() {
         onRowClick={(product) => {
         setSelectedProduct(product);
         setShowModal(true);}}/>
-      <PaginationInfo currentPage={currentPage} totalPages={totalPages} rowsPerPage={rowsPerPage}/>
+      <PaginationInfo currentPage={currentPage+1} totalPages={totalPages} rowsPerPage={rowsPerPage}/>
       <ProductPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage}/>
       {showModal && selectedProduct && (<EditProductModal show={showModal} product={selectedProduct} onClose={() => setShowModal(false)}
           onSave={handleSave} onDelete={handleDelete}/>)}

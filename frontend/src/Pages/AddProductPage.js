@@ -34,7 +34,7 @@ export default function AddProductPage() {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const response = await fetch('http://localhost:5000/api/products/addProduct', {
+      const response = await fetch('/api/products/addProduct', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,13 +42,16 @@ export default function AddProductPage() {
         body: JSON.stringify(form),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        const errorMsg = errorData?.message || 'Failed to add product';
-        alert(`Error: ${errorMsg}`);
+      if (response.status === 400) {
+        alert(`Catalog Number already exists`);
         return;
+      }else if(response.status === 500){
+        alert(`Error in Connect to server`);
+      }else if (response.status === 401){
+        alert("One or more fields are not valid."); 
+      }if (response.ok){
+        alert('Product added successfully!'); 
       }
-      alert('Product added successfully!');
   } catch (error) {
       alert(`Error: ${error.message || 'Network error'}`);
   }

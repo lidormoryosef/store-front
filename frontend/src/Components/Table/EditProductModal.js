@@ -20,6 +20,7 @@ export default function EditProductModal({ show, product, onClose, onSave , onDe
   const validate = () => {
     const newErrors = {};
     if (!form.name?.trim()) newErrors.name = 'Name is required';
+    if (form.name.length > 50) newErrors.name = 'Name must be at most 50 characters';
     if (form.catalogNumber === '' || form.catalogNumber === null || form.catalogNumber === undefined) {
       newErrors.catalogNumber = 'Catalog number is required';
     }else if (isNaN(form.catalogNumber) || Number(form.catalogNumber) < 0) {
@@ -34,7 +35,8 @@ export default function EditProductModal({ show, product, onClose, onSave , onDe
   const handleSubmit = async () => {
     if (!validate()) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/products/editProduct`, {
+      console.log()
+      const response = await fetch(`/api/products/editProduct`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -42,9 +44,16 @@ export default function EditProductModal({ show, product, onClose, onSave , onDe
 
       if (response.ok) {
         const updatedProduct = await response.json();
+        alert('Product updated successfully');
         onSave(updatedProduct);
         onClose();
-      } else {
+      }else if(response.status === 404){
+        alert('ProductId Not Found');
+      }else if(response.status === 400){
+        alert('You Change to Catalog Number That already exists');
+      }else if (response.status === 401){
+        alert("One or more fields are not valid."); 
+      }else{
         alert('Failed to update product');
       }
     } catch (err) {
@@ -56,7 +65,7 @@ export default function EditProductModal({ show, product, onClose, onSave , onDe
     if (!window.confirm('Are you sure you want to delete this product?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/products/deleteProduct/${product.id}`, {
+      const response = await fetch(`/api/products/deleteProduct/${product.id}`, {
         method: 'DELETE',
       });
 
