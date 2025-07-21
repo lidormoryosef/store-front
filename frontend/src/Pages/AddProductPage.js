@@ -3,7 +3,7 @@ import ReturnHomeButton from '../Components/ReturnHomeButton';
 import TextInput from '../Components/Fields/TextInput';
 import TextAreaInput from '../Components/Fields/TextAreaInput';
 import SelectInput from '../Components/Fields/SelectInput';
-
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 export default function AddProductPage() {
   const formatDate = (d) => {
     const month = `${d.getMonth() + 1}`.padStart(2, '0');
@@ -34,7 +34,7 @@ export default function AddProductPage() {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const response = await fetch('http://localhost:5000/api/products/addProduct', {
+      const response = await fetch(`${API_BASE_URL}/api/products/addProduct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
