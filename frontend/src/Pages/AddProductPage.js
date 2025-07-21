@@ -19,8 +19,12 @@ export default function AddProductPage() {
   };
   const validate = () => {
     const newErrors = {};
-    if (!form.name.trim()) newErrors.name = 'Name is required';
-    if (!form.catalogNumber.trim()) newErrors.catalogNumber = 'Catalog number is required';
+    if (!form.name?.trim()) newErrors.name = 'Name is required';
+    if (form.catalogNumber === '' || form.catalogNumber === null || form.catalogNumber === undefined) {
+      newErrors.catalogNumber = 'Catalog number is required';
+    }else if (isNaN(form.catalogNumber) || Number(form.catalogNumber) < 0) {
+      newErrors.catalogNumber = 'Catalog number must be 0 or greater';
+    }
     if (!form.type) newErrors.type = 'Type is required';
     if (!form.marketingDate) newErrors.marketingDate = 'Marketing date is required';
     setErrors(newErrors);
@@ -30,7 +34,7 @@ export default function AddProductPage() {
     e.preventDefault();
     if (!validate()) return;
     try {
-      const response = await fetch('/api/addProduct', {
+      const response = await fetch('http://localhost:5000/api/products/addProduct', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +60,7 @@ export default function AddProductPage() {
         <h2 className="mb-4">Add Product</h2>
         <form noValidate onSubmit={handleSubmit}>
           <TextInput label="Product Name" id="name" name="name"  value={form.name} onChange={handleChange} error={errors.name}/>
-          <TextInput label="Catalog Number" id="catalogNumber" name="catalogNumber" value={form.catalogNumber} onChange={handleChange} error={errors.catalogNumber}/>
+          <TextInput label="Catalog Number" id="catalogNumber" name="catalogNumber" value={form.catalogNumber} onChange={handleChange} error={errors.catalogNumber} type="number"/>
           <TextAreaInput label="Description" id="description" name="description" value={form.description} onChange={handleChange} error={errors.description}/>
           <SelectInput label="Type" id="type" name="type" value={form.type} onChange={handleChange} error={errors.type} options={['Fruit', 'Vegetable', 'Field crops']}/>
           <TextInput label="Product Marketing Date" id="marketingDate" name="marketingDate" type="date" value={form.marketingDate} onChange={handleChange} error={errors.marketingDate}/>
