@@ -6,6 +6,7 @@ export default function TextInput({ label, id, name, value, onChange, error, typ
       <label htmlFor={id} className="form-label">{label}</label>
       <input
         type={type}
+        min = "0"
         className={`form-control ${error ? 'is-invalid' : ''}`}
         id={id}
         name={name}

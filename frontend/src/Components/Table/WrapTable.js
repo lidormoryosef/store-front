@@ -13,7 +13,7 @@ export default function WrapTable() {
   {
     "id": 1,
     "name": "Apple",
-    "catalogNumber": "CAT-1001",
+    "catalogNumber": 1001,
     "description": "Fresh red apples, crispy and juicy.",
     "type": "Fruit",
     "marketingDate": "2025-07-13"
@@ -21,7 +21,7 @@ export default function WrapTable() {
   {
     "id": 2,
     "name": "Carrot",
-    "catalogNumber": "CAT-1002",
+    "catalogNumber": 1002,
     "description": "Organic orange carrots, perfect for salads.",
     "type": "Vegetable",
     "marketingDate": "2025-07-12"
@@ -29,7 +29,7 @@ export default function WrapTable() {
   {
     "id": 3,
     "name": "Wheat",
-    "catalogNumber": "CAT-1003",
+    "catalogNumber": 1003,
     "description": "High-quality wheat grains for baking.",
     "type": "Field crops",
     "marketingDate": "2025-07-10"
@@ -37,7 +37,7 @@ export default function WrapTable() {
   {
     "id": 4,
     "name": "Banana",
-    "catalogNumber": "CAT-1004",
+    "catalogNumber": 1004,
     "description": "Sweet ripe bananas full of potassium.",
     "type": "Fruit",
     "marketingDate": "2025-07-11"
@@ -45,7 +45,7 @@ export default function WrapTable() {
   {
     "id": 5,
     "name": "Spinach",
-    "catalogNumber": "CAT-1005",
+    "catalogNumber": 1005,
     "description": "Fresh green spinach leaves, packed with vitamins.",
     "type": "Vegetable",
     "marketingDate": "2025-07-09"
@@ -59,7 +59,7 @@ export default function WrapTable() {
   const [sortBy, setSortBy] = useState('name');
   const [order, setOrder] = useState('asc');
   const [currentPage, setCurrentPage] = useState(0);
-  const rowsPerPage = 10;
+  const rowsPerPage = 7;
   
   useEffect(() => {
     async function fetchData() {
@@ -90,6 +90,12 @@ export default function WrapTable() {
     }
     setCurrentPage(0);
   };
+  const handleSave = (updatedProduct) => {
+    setData((prev) =>prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
+  };
+  const handleDelete = () => {
+    setData((prev) => prev.filter((p) => p.id !== selectedProduct.id));
+  };
 
   return (
     <div className="container my-5" style={{ maxWidth: '900px' }}>
@@ -101,11 +107,7 @@ export default function WrapTable() {
       <PaginationInfo currentPage={currentPage} totalPages={totalPages} rowsPerPage={rowsPerPage}/>
       <ProductPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage}/>
       {showModal && selectedProduct && (<EditProductModal show={showModal} product={selectedProduct} onClose={() => setShowModal(false)}
-          onSave={(updatedProduct) => {
-                setData((prev) =>
-                prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
-                setShowModal(false);
-            }}/>)}
+          onSave={handleSave} onDelete={handleDelete}/>)}
     </div>
     
   );
