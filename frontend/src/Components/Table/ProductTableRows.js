@@ -23,7 +23,7 @@ export default function ProductTableRows({ data, onRowClick }) {
           <td>{product.name}</td>
           <td>{product.description}</td>
           <td>{product.type}</td>
-          <td>{new Date(product.date).toLocaleDateString()}</td>
+          <td>{new Date(product.marketingDate).toLocaleDateString()}</td>
         </tr>
       ))}
     </>

@@ -7,7 +7,7 @@ export default function PaginationInfo({ currentPage, totalPages, rowsPerPage })
         Page {currentPage} of {totalPages}
       </div>
       <div>
-        Showing {rowsPerPage} products per page
+        Showing up to {rowsPerPage} products per page
       </div>
     </div>
   );
